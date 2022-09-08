@@ -119,7 +119,8 @@ export default function ListAllUsers() {
     }, [deleteSelected])
 
     return (
-        <div >
+        <div  style={{ display: 'flex', width: '100%' }}>
+            <div  style={{ padding: '2%', minWidth: "30%" }}>
             {users ? users.map((user) => {
                 let sameUser = false;
                 if (user.userName === localStorage.getItem('username')) {
@@ -127,9 +128,9 @@ export default function ListAllUsers() {
                     console.log("Same user")
                 }
                 return (
-                    <Grid key={user.userName}>
+                    <Grid style={{ padding: '5px 30px' }} key={user.userName}>
                         <br />
-                        <Card sx={{ maxWidth: 345 }}>
+                        <Card >
                             <CardHeader
                                 onClick={()=>{SendTweetUser(user.userName)}}
 
@@ -149,8 +150,9 @@ export default function ListAllUsers() {
                     </Grid>
                 );
             }) : "hi"}
+            </div>
             <Card>
-                {userSelected && <ListTweetsByUser userSelected={userSelected} />}
+                {userSelected && <ListTweetsByUser style={{ padding: '2%', minWidth: "70%" }} userSelected={userSelected} />}
             </Card>
         </div >
     );

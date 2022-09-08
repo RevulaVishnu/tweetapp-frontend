@@ -54,10 +54,11 @@ export default function ListTweetsByUser(props) {
   };
   const [tweetIdLiked, setTweetIdLiked] = useState('');
 
+  console.log(props.userSelected);
   useEffect(() => {
     isMounted &&
     //   axios.get('http://localhost:8084/api/v1.0/tweets/'+localStorage.getItem('username'),
-      axios.get('http://localhost:8084/api/v1.0/tweets/vishnu',
+      axios.get('http://localhost:8084/api/v1.0/tweets/'+props.userSelected,
       {
           headers:{
               Authorization : localStorage.getItem('Authorization')
@@ -152,7 +153,7 @@ export default function ListTweetsByUser(props) {
 
           <Grid key={tweet.tweetId}>
             <br />
-            <Card sx={{ maxWidth: 345 }}>
+            <Card  style={{ minWidth: '400px' }}>
               <CardHeader
                 avatar={
                   <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
