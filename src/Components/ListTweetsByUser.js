@@ -38,7 +38,7 @@ const ExpandMore = styled((props) => {
   }),
 }));
 
-export default function TweetCard() {
+export default function ListTweetsByUser(props) {
   let isMounted = true;
   const [clicked, setClicked] = useState('');
   const [deleteSelected, SetDeleteSelected] = useState('');
@@ -56,7 +56,14 @@ export default function TweetCard() {
 
   useEffect(() => {
     isMounted &&
-      axios.get('http://localhost:8084/api/v1.0/tweets/all')
+    //   axios.get('http://localhost:8084/api/v1.0/tweets/'+localStorage.getItem('username'),
+      axios.get('http://localhost:8084/api/v1.0/tweets/vishnu',
+      {
+          headers:{
+              Authorization : localStorage.getItem('Authorization')
+          }
+      }
+      )
         .then((response) => {
           // console.log(response.data.data);
           setTweets(response.data.data);
@@ -68,10 +75,11 @@ export default function TweetCard() {
 
 
   useEffect(() => {
+
     function onlike() {
-      // console.log(tweetMessage)
+    //   console.log(userSelected);
       axios.put(
-        'http://localhost:8084/api/v1.0/tweets/' + localStorage.getItem("username") + '/like/' + clicked,{},
+        'http://localhost:8084/api/v1.0/tweets/' + props.userSelected + '/like/' + clicked,{},
         {
           headers: {
             Authorization: localStorage.getItem('Authorization'),
@@ -139,7 +147,6 @@ export default function TweetCard() {
         let sameUser = false;
         if(tweet.userName === localStorage.getItem('username')){
           sameUser=true;
-          console.log("Same user")
         }
         return (
 
@@ -151,11 +158,6 @@ export default function TweetCard() {
                   <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
                     {tweet.userName.charAt(0)}
                   </Avatar>
-                }
-                action={
-                  <IconButton aria-label="settings">
-                    <MoreVertIcon />
-                  </IconButton>
                 }
                 title={tweet.userName}
                 subheader={tweet.created}

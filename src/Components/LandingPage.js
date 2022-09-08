@@ -17,7 +17,7 @@ import {
 import { RiLoginBoxLine } from "react-icons/ri";
 
 import styles from "../styles/HomePage.module.css";
-import TweetCard from "./TweetCard";
+import ListAllTweets from "./ListAllTweets";
 
 
 

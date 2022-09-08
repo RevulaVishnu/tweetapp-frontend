@@ -22,9 +22,11 @@ import {
 import { RiLoginBoxLine } from "react-icons/ri";
 
 import styles from "../styles/HomePage.module.css";
-import TweetCard from "./TweetCard";
+import ListAllTweets from "./ListAllTweets";
 import Navbar from "./Navbar";
 import PostTweet from "./PostTweet";
+import ListAllUsers from "./ListAllUsers";
+import ListTweetsByUser from "./ListTweetsByUser";
 
 export default function HomePage() {
   const navigate = useNavigate();
@@ -56,12 +58,15 @@ export default function HomePage() {
     // <Container >
     <>
       <Navbar />
-      <Grid style={{ display: 'flex' ,width:'100%'}}>
-        <div style={{ padding: '2%' ,minWidth:"33%"}}>Place for UserList</div>
-        <div style={{ padding: '2%', minWidth:"33%" }}>
-            <TweetCard />
+      <Grid style={{ display: 'flex', width: '100%' }}>
+        <div style={{ padding: '2%', minWidth: "33%" }}>
+          <ListAllUsers />
+          {/* <ListTweetsByUser /> */}
         </div>
-        <div style={{ padding: '2%', minWidth:"33%" ,position: 'sticky'}}>
+        <div style={{ padding: '2%', minWidth: "33%" }}>
+          <ListAllTweets />
+        </div>
+        <div style={{ padding: '2%', minWidth: "33%", position: 'sticky' }}>
           <Box
             sx={{
               display: 'flex',
