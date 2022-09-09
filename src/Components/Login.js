@@ -42,7 +42,7 @@ const Login = ({ handleClose }) => {
     })
     .then(function (response) {
       console.log(response.data.data.token);
-      localStorage.setItem('username',response.data.data.userData.firstName + " "+response.data.data.userData.lastName);
+      localStorage.setItem('username',response.data.data.userData.firstName +response.data.data.userData.lastName);
       localStorage.setItem('Authorization',response.data.data.token)
       navigate('/home')
     })

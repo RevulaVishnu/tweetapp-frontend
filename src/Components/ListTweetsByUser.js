@@ -26,6 +26,7 @@ import ListItem from '@mui/material/ListItem';
 import Divider from '@mui/material/Divider';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
+import TweetTemplate from './TweetTemplate';
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -147,59 +148,14 @@ export default function ListTweetsByUser(props) {
 
   return (
     <div >
-      {tweets ? tweets.map((tweet) => {
-        // Object.keys(tweet.replies) ? setReplies(Object.keys(tweet.replies)) : setReplies(null);
-        // console.log(replies);
-        let sameUser = false;
-        if(tweet.userName === localStorage.getItem('username')){
-          sameUser=true;
-        }
-        return (
-
-          <Grid key={tweet.tweetId}>
-            <br />
-            <Card  style={{ minWidth: '400px' }}>
-              <CardHeader
-                avatar={
-                  <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-                    {tweet.userName.charAt(0)}
-                  </Avatar>
-                }
-                title={tweet.userName}
-                subheader={tweet.created}
-              />
-              <CardContent>
-                <Typography variant="body3" color="text.secondary">
-                  {tweet.tweet} + {tweet.tweetId}
-                </Typography>
-              </CardContent>
-
-              <CardActions disableSpacing>
-                <IconButton aria-label="Like"
-                  onClick={() => { setClicked(tweet.tweetId) }}
-                >
-                  {clicked ? <FavoriteIcon sx={{color:"red"}}/> :<FavoriteIcon/>}
-                </IconButton>
-                <IconButton aria-label="Like"
-                  style={{display: (!(sameUser) ? 'none' : 'block') }}
-                  onClick={() => { SetDeleteSelected(tweet.tweetId) }}
-                >
-                  <DeleteOutline />
-                </IconButton>
-                
-                {/* <ExpandMore
-                  expand={expanded}
-                  onClick={handleExpandClick}
-                  aria-expanded={expanded}
-                  aria-label="show more"
-                >
-                  <ExpandMoreIcon />
-                </ExpandMore> */}
-              </CardActions>
-            </Card>
-          </Grid>
-        );
-      }) : "hi"}
-    </div >
+    {tweets ? tweets.map((tweet) => {
+      console.log(tweet);
+      return (
+        <div key={tweet.tweetId}>
+           {tweet ? <TweetTemplate style={{ padding: '2%', minWidth: "70%" }} tweet={tweet}/> : ''}
+        </div>
+      );
+    }) : "hi"}
+  </div >
   );
 }

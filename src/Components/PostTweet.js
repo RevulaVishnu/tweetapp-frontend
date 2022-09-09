@@ -13,6 +13,9 @@ import axios from 'axios';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/joy/Box';
 import Textarea from '@mui/joy/Textarea';
+import { Button } from 'react-bootstrap'
+import { Telegram } from '@mui/icons-material';
+
 
 
 const ExpandMore = styled((props) => {
@@ -54,12 +57,12 @@ export default function PostTweet() {
                     }
                 }
             )
-            .then((resp) => {
-                console.log(resp);
-            });
+                .then((resp) => {
+                    console.log(resp);
+                });
             setSubmitTweet(false)
         }
-        if(submitTweet) postTweet();
+        if (submitTweet) postTweet();
     }, [submitTweet])
 
     return (
@@ -95,12 +98,13 @@ export default function PostTweet() {
                     </CardContent>
 
                     <CardActions disableSpacing>
-                        <IconButton aria-label="Post"
+                        <IconButton variant="contained" aria-label="Post"
                             onClick={() => { setSubmitTweet(true) }}
                         >
-                            Post
+                            <Telegram />
                         </IconButton>
                     </CardActions>
+
                 </Card>
             </Grid>
         </div >
