@@ -51,6 +51,9 @@ const Login = ({ handleClose }) => {
     });
     handleClose();
   };
+  function handleClose(){
+    navigate('/');
+  }
   return (
     <form className={classes.root} onSubmit={handleSubmit}>
     

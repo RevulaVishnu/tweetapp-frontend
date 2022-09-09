@@ -33,7 +33,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const Registration = ({ handleClose }) => {
+const Registration = () => {
   const classes = useStyles();
   const [value, setValue] = useState(null);
   var date = new Date(value)
@@ -79,6 +79,10 @@ const Registration = ({ handleClose }) => {
   
     handleClose();
   };
+
+  function handleClose(){
+    navigate('/');
+  }
 
   return (
     <>

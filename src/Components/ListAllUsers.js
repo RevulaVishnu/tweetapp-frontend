@@ -125,7 +125,6 @@ export default function ListAllUsers() {
                 let sameUser = false;
                 if (user.userName === localStorage.getItem('username')) {
                     sameUser = true;
-                    console.log("Same user")
                 }
                 return (
                     <Grid style={{ padding: '5px 30px' }} key={user.userName}>
@@ -152,7 +151,7 @@ export default function ListAllUsers() {
             }) : "hi"}
             </div>
             <Card>
-                {userSelected && <ListTweetsByUser style={{ padding: '2%', minWidth: "70%" }} userSelected={userSelected} />}
+                {userSelected ? <ListTweetsByUser style={{ padding: '2%', minWidth: "70%" }} userSelected={userSelected}/> : ''}
             </Card>
         </div >
     );

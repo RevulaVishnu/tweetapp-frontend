@@ -43,11 +43,8 @@ export default function ListTweetsByUser(props) {
   const [clicked, setClicked] = useState('');
   const [deleteSelected, SetDeleteSelected] = useState('');
   const [tweets, setTweets] = useState([]);
-  // const [replies, setReplies] = useState({});
-  const [submitTweet, setSubmitTweet] = useState(false);
-  const [tweetMessage, setTweetMessage] = useState('');
-  // const tweetList = 
   const [expanded, setExpanded] = useState(false);
+  const [userSelectedFromParent, setUserSelectedFromParent] = useState(false);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -55,9 +52,11 @@ export default function ListTweetsByUser(props) {
   const [tweetIdLiked, setTweetIdLiked] = useState('');
 
   console.log(props.userSelected);
+
+
   useEffect(() => {
-    isMounted &&
-    //   axios.get('http://localhost:8084/api/v1.0/tweets/'+localStorage.getItem('username'),
+
+    function getTweetsByUser(){
       axios.get('http://localhost:8084/api/v1.0/tweets/'+props.userSelected,
       {
           headers:{
@@ -66,13 +65,19 @@ export default function ListTweetsByUser(props) {
       }
       )
         .then((response) => {
-          // console.log(response.data.data);
+          console.log(response.status);
           setTweets(response.data.data);
+          
+        }).catch((err) =>{
+          console.log(err.response.data.data)
+        
         })
-    return () => {
       isMounted = false;
-    };
-  }, []);
+    }
+    if(isMounted){
+      getTweetsByUser();
+    }
+  });
 
 
   useEffect(() => {
