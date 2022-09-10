@@ -28,6 +28,9 @@ import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Button from '@restart/ui/esm/Button';
 import ReplyIcon from '@mui/icons-material/Reply';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import Box from '@mui/material/Box';
+import Modal from '@mui/material/Modal';
 
 
 const ExpandMore = styled((props) => {
@@ -47,6 +50,8 @@ export default function TweetTemplate(props) {
     const [deletedTweetId, setDeletedTweetId] = useState('');
     const [repliedTweetId, setRepliedTweetId] = useState('');
     const [replyTweetMessage, setreplyTweetMessage] = useState('');
+    const [updatedTweetId, setUpdatedTweetId] = useState('');
+    const [updatedTweetMessage, setUpdatedTweetMessage] = useState('');
     const [tweets, setTweets] = useState([]);
     const [tweet, setTweet] = useState({});
     // const [replies, setReplies] = useState({});
@@ -54,6 +59,10 @@ export default function TweetTemplate(props) {
     const [tweetMessage, setTweetMessage] = useState('');
     // const tweetList = 
     const [expanded, setExpanded] = useState(false);
+
+    const [openModal, setOpenModal] = useState(false);
+    const handleOpenModal = () => setOpenModal(true);
+    const handleCloseModal = () => setOpenModal(false);
 
     const handleExpandClick = () => {
         setExpanded(!expanded);
@@ -91,25 +100,27 @@ export default function TweetTemplate(props) {
 
 
     useEffect(() => {
-      function replyTweet() {
-        console.log(replyTweetMessage)
-        axios.post(
-          'http://localhost:8084/api/v1.0/tweets/'  + localStorage.getItem("username") + '/reply/' + repliedTweetId,
-          {
-            'tweet': replyTweetMessage
-          },
-          {
-            headers: {
-                Authorization: localStorage.getItem('Authorization'),
+        function replyTweet() {
+            if (replyTweetMessage != '') {
+                console.log(replyTweetMessage)
+                axios.post(
+                    'http://localhost:8084/api/v1.0/tweets/' + localStorage.getItem("username") + '/reply/' + repliedTweetId,
+                    {
+                        'tweet': replyTweetMessage
+                    },
+                    {
+                        headers: {
+                            Authorization: localStorage.getItem('Authorization'),
 
+                        }
+                    }
+                )
+                    .then((resp) => {
+                        console.log(resp);
+                    });
             }
         }
-        )
-          .then((resp) => {
-            console.log(resp);
-          });
-      }
-      if(repliedTweetId) replyTweet();
+        if (repliedTweetId) replyTweet();
     }, [wasReplyTweetSubmitted])
 
     useEffect(() => {
@@ -129,6 +140,23 @@ export default function TweetTemplate(props) {
         }
         if (deletedTweetId) deleteTweet();
     }, [deletedTweetId])
+
+    useEffect(() => {
+        function updateTweet() {
+            axios.put(
+                'http://localhost:8084/api/v1.0/tweets/' + localStorage.getItem("username") + '/update/' + updatedTweetId,
+                {
+                    headers: {
+                        Authorization: localStorage.getItem('Authorization')
+                    }
+                }
+            )
+                .then((resp) => {
+                    console.log(resp);
+                });
+        }
+        if (updatedTweetId) updateTweet();
+    }, [updatedTweetId])
 
     return (
         <div >
@@ -164,6 +192,47 @@ export default function TweetTemplate(props) {
                         >
                             <DeleteOutline />
                         </IconButton>
+                        <IconButton aria-label="Like"
+                            style={{ display: (!(sameUser) ? 'none' : 'block') }}
+                            onClick={() => { handleOpenModal()}}
+                        >
+                            <EditOutlinedIcon />
+                        </IconButton>
+                        
+                        <Modal
+                            openModal={openModal}
+                            onCloseModal={handleCloseModal}
+                            aria-labelledby="modal-modal-title"
+                            aria-describedby="modal-modal-description"
+                        >
+                            <Box >
+                                <Typography id="modal-modal-title" variant="h6" component="h2">
+                                    Update the tweet
+                                </Typography>
+        
+                                <Typography variant="body3" color="text.secondary">
+                                <Textarea
+                                    id= "modal-modal-description"
+                                    label="Primary"
+                                    placeholder="What's on your mind"
+                                    variant="outlined"
+                                    color="primary"
+                                    required
+                                    value={replyTweetMessage}
+                                    onChange={(e) => {setUpdatedTweetId(props.tweet.tweetId); setUpdatedTweetMessage(e.target.value)}}
+                                />
+                            </Typography>
+                            <br />
+                            <CardActions disableSpacing>
+                                <IconButton aria-label="Post" size="small"
+                                    onClick={() => { setWasReplyTweetSubmitted(true); setRepliedTweetId(props.tweet.tweetId) }}
+                                >
+                                    <ReplyIcon />
+                                    {/* Reply */}
+                                </IconButton>
+                            </CardActions>
+                            </Box>
+                        </Modal>
 
                         <ExpandMore
                             expand={expanded}
@@ -192,19 +261,19 @@ export default function TweetTemplate(props) {
                             <br />
                             <CardActions disableSpacing>
                                 <IconButton aria-label="Post" size="small"
-                                onClick={() => { setWasReplyTweetSubmitted(true); setRepliedTweetId(props.tweet.tweetId) }}
+                                    onClick={() => { setWasReplyTweetSubmitted(true); setRepliedTweetId(props.tweet.tweetId) }}
                                 >
                                     <ReplyIcon />
                                     {/* Reply */}
                                 </IconButton>
                             </CardActions>
-                            <Typography  variant="overline" display="block" gutterBottom>
+                            <Typography variant="overline" display="block" gutterBottom>
                                 <CardHeader
                                     avatar={
                                         <Avatar sx={{ bgcolor: red[500] }} size="small" aria-label="recipe">
                                             {props.tweet.userName.charAt(0)}
                                         </Avatar>
-                                        
+
                                     }
                                     subheader={props.tweet.created}
                                 />

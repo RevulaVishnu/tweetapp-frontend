@@ -58,6 +58,7 @@ export default function ListTweetsByUser(props) {
   useEffect(() => {
 
     function getTweetsByUser(){
+      isMounted = false;
       axios.get('http://localhost:8084/api/v1.0/tweets/'+props.userSelected,
       {
           headers:{
@@ -73,78 +74,12 @@ export default function ListTweetsByUser(props) {
           console.log(err.response.data.data)
         
         })
-      isMounted = false;
+      
     }
     if(isMounted){
       getTweetsByUser();
     }
   });
-
-
-  useEffect(() => {
-
-    function onlike() {
-    //   console.log(userSelected);
-      axios.put(
-        'http://localhost:8084/api/v1.0/tweets/' + props.userSelected + '/like/' + clicked,{},
-        {
-          headers: {
-            Authorization: localStorage.getItem('Authorization'),
-          
-        }
-      }
-      )
-        .then((resp) => {
-          console.log(resp);
-        })
-        .catch((err)=>{
-          // console.log(err);
-        })
-        setClicked();
-    }
-    if(clicked) onlike();
-  }, [clicked])
-
-
-  // useEffect(() => {
-  //   function replyTweet(e) {
-  //     // console.log(tweetMessage)
-  //     axios.post(
-  //       'http://localhost:8084/api/v1.0/tweets/'  + localStorage.getItem("username") + '/reply/' + clicked,
-  //       {
-  //         'tweet': tweetMessage
-  //       },
-  //       {
-  //         headers: {
-  //           // Authorization: token
-  //           Authorization: localStorage.getItem('Authorization')
-  //         }
-  //       }
-  //     )
-  //       .then((resp) => {
-  //         console.log(resp);
-  //       });
-  //   }
-  //   replyTweet()
-  // }, [submitTweet])
-
-  useEffect(() => {
-    function deleteTweet(e) {
-      // console.log(tweetMessage)
-      axios.delete(
-        'http://localhost:8084/api/v1.0/tweets/' + localStorage.getItem("username") + '/delete/' + deleteSelected,
-        {
-          headers: {
-            Authorization: localStorage.getItem('Authorization')
-          }
-        }
-      )
-        .then((resp) => {
-          console.log(resp);
-        });
-    }
-    if(deleteSelected) deleteTweet();
-  }, [deleteSelected])
 
   return (
     <div >

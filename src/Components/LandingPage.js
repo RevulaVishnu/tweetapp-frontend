@@ -28,7 +28,7 @@ function LandingPage() {
     <Container >
       {/* <TweetCard/> */}
       <Row className={styles.container}>
-        {/* <Col className={`${styles.colContainerLeft} ${styles.leftBackground}`}>
+        <Col className={`${styles.colContainerLeft} ${styles.leftBackground}`}>
           <div>
             <Row>
               <h3 className="my-3">
@@ -46,18 +46,18 @@ function LandingPage() {
               </h3>
             </Row>
           </div>
-        </Col> */}
+        </Col>
         <center>
         <Row>
               <h3 className="text-info">Join our Tweet Community to know latest updates on the world</h3>
             </Row>
         </center>
        
-        {/* <Col className={styles.colContainerRight}> */}
+        <Col className={styles.colContainerRight}>
           <div className={styles.colWithButtons}>
             {/* <img src={psnLogo} alt="PSN logo" width={120} className="mb-3" /> */}
            
-            {/* <br />
+            <br />
             <Row>
               <h5 className="text-success mb-3">Join Tweet App today</h5>
             </Row>{" "}
@@ -67,7 +67,7 @@ function LandingPage() {
             </Row>
             <Row>
             <Link to="/signup" className={styles.linkTextFormat}><Button variant="success" className={styles.btnHomePage}>Sign Up <BsFillPersonPlusFill /></Button></Link>
-            </Row> */}
+            </Row>
             <fieldset class="border p-2 text-primary">Join Tweet App today
               <legend class="w-auto">
                 <Row>
@@ -83,7 +83,7 @@ function LandingPage() {
               </legend>
             </fieldset>
           </div>
-        {/* </Col> */}
+        </Col>
       </Row>
     </Container>
   );
