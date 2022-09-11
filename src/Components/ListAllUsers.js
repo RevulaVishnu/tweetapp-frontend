@@ -27,6 +27,7 @@ import Divider from '@mui/material/Divider';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import ListTweetsByUser from './ListTweetsByUser';
+import { BASE_URL } from '../Constants';
 
 const ExpandMore = styled((props) => {
     const { expand, ...other } = props;
@@ -59,7 +60,7 @@ export default function ListAllUsers() {
 
     useEffect(() => {
         isMounted &&
-            axios.get('http://localhost:8084/api/v1.0/user/users/all')
+            axios.get(BASE_URL+'/user/users/all')
                 .then((response) => {
                     // console.log(response.data.data);
                     setUsers(response.data.data);
@@ -74,7 +75,7 @@ export default function ListAllUsers() {
         function onlike() {
             // console.log(tweetMessage)
             axios.put(
-                'http://localhost:8084/api/v1.0/tweets/' + localStorage.getItem("username") + '/like/' + clicked, {},
+                BASE_URL+'/tweets/' + localStorage.getItem("username") + '/like/' + clicked, {},
                 {
                     headers: {
                         Authorization: localStorage.getItem('Authorization'),
@@ -104,7 +105,7 @@ export default function ListAllUsers() {
         function deleteTweet(e) {
             // console.log(tweetMessage)
             axios.delete(
-                'http://localhost:8084/api/v1.0/tweets/' + localStorage.getItem("username") + '/delete/' + deleteSelected,
+                BASE_URL+'/tweets/' + localStorage.getItem("username") + '/delete/' + deleteSelected,
                 {
                     headers: {
                         Authorization: localStorage.getItem('Authorization')

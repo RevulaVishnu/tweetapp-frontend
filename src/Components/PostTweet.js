@@ -15,6 +15,7 @@ import Box from '@mui/joy/Box';
 import Textarea from '@mui/joy/Textarea';
 import { Button } from 'react-bootstrap'
 import { Telegram } from '@mui/icons-material';
+import { BASE_URL } from '../Constants';
 
 
 
@@ -46,7 +47,7 @@ export default function PostTweet() {
         function postTweet(e) {
             // console.log(tweetMessage)
             axios.post(
-                'http://localhost:8084/api/v1.0/tweets/add/' + localStorage.getItem("username"),
+                BASE_URL+'/tweets/add/' + localStorage.getItem("username"),
                 {
                     'tweet': tweetMessage
                 },

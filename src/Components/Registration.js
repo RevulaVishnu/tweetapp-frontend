@@ -56,7 +56,7 @@ const Registration = () => {
     e.preventDefault();
     setSpinner(true);
     console.log(firstName, lastName, email, password, gender, value,finaldate, mobileNumber);
-    axios.post('http://localhost:8084/api/v1.0/user/register', {
+    axios.post(BASE_URL+'/user/register', {
       "email":email,
       "password":password,
       "firstName":firstName,

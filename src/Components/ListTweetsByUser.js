@@ -57,40 +57,110 @@ export default function ListTweetsByUser(props) {
 
   useEffect(() => {
 
-    function getTweetsByUser(){
-      isMounted = false;
-      axios.get('http://localhost:8084/api/v1.0/tweets/'+props.userSelected,
-      {
-          headers:{
-              Authorization : localStorage.getItem('Authorization')
+    function getTweetsByUser() {
+      axios.get(BASE_URL+'/tweets/' + props.userSelected,
+        {
+          headers: {
+            Authorization: localStorage.getItem('Authorization')
           }
-      }
+        }
       )
         .then((response) => {
           console.log(response.status);
           setTweets(response.data.data);
-          
-        }).catch((err) =>{
+
+        }).catch((err) => {
           console.log(err.response.data.data)
-        
+
         })
-      
+      isMounted = false;
     }
-    if(isMounted){
+    if (isMounted) {
       getTweetsByUser();
     }
   });
 
+
+  useEffect(() => {
+
+    function onlike() {
+      //   console.log(userSelected);
+      axios.put(
+        BASE_URL+'/tweets/' + props.userSelected + '/like/' + clicked, {},
+        {
+          headers: {
+            Authorization: localStorage.getItem('Authorization'),
+
+          }
+        }
+      )
+        .then((resp) => {
+          console.log(resp);
+        })
+        .catch((err) => {
+          // console.log(err);
+        })
+      setClicked();
+    }
+    if (clicked) onlike();
+  }, [clicked])
+
+
+  // useEffect(() => {
+  //   function replyTweet(e) {
+  //     // console.log(tweetMessage)
+  //     axios.post(
+  //       BASE_URL+'/tweets/'  + localStorage.getItem("username") + '/reply/' + clicked,
+  //       {
+  //         'tweet': tweetMessage
+  //       },
+  //       {
+  //         headers: {
+  //           // Authorization: token
+  //           Authorization: localStorage.getItem('Authorization')
+  //         }
+  //       }
+  //     )
+  //       .then((resp) => {
+  //         console.log(resp);
+  //       });
+  //   }
+  //   replyTweet()
+  // }, [submitTweet])
+
+  useEffect(() => {
+    function deleteTweet(e) {
+      // console.log(tweetMessage)
+      axios.delete(
+        BASE_URL+'/tweets/' + localStorage.getItem("username") + '/delete/' + deleteSelected,
+        {
+          headers: {
+            Authorization: localStorage.getItem('Authorization')
+          }
+        }
+      )
+        .then((resp) => {
+          console.log(resp);
+        });
+    }
+    if (deleteSelected) deleteTweet();
+  }, [deleteSelected])
+
   return (
     <div >
-    {tweets ? tweets.map((tweet) => {
-      console.log(tweet);
-      return (
-        <div key={tweet.tweetId}>
-           {tweet ? <TweetTemplate style={{ padding: '2%', minWidth: "70%" }} tweet={tweet}/> : ''}
-        </div>
-      );
-    }) : "hi"}
-  </div >
+      {tweets ? tweets.map((tweet) => {
+        // Object.keys(tweet.replies) ? setReplies(Object.keys(tweet.replies)) : setReplies(null);
+        // console.log(replies);
+        let sameUser = false;
+        if (tweet.userName === localStorage.getItem('username')) {
+          sameUser = true;
+        }
+        return (
+          <div key={tweet.tweetId}>
+            {tweet ? <TweetTemplate style={{ padding: '2%', minWidth: "70%" }} tweet={tweet} /> : ''}
+          </div>
+        );
+      }) : "hi"}
+    </div >
   );
 }

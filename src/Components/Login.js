@@ -60,7 +60,7 @@ const Login = ({ handleClose }) => {
   const handleSubmit = e => {
     e.preventDefault();
     console.log(email, password);
-    axios.post('http://localhost:8084/api/v1.0/login', {
+    axios.post(BASE_URL+'/login', {
       "username": email,
       "password": password,
     })

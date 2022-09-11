@@ -27,12 +27,13 @@ import Navbar from "./Navbar";
 import PostTweet from "./PostTweet";
 import ListAllUsers from "./ListAllUsers";
 import ListTweetsByUser from "./ListTweetsByUser";
+import { BASE_URL } from "../Constants";
 
 export default function HomePage() {
   const navigate = useNavigate();
 
   function tokenValidate() {
-    axios.get('http://localhost:8084/api/v1.0/validate', {
+    axios.get(BASE_URL+'/validate', {
       headers: {
         Authorization: localStorage.getItem("Authorization")
       }
