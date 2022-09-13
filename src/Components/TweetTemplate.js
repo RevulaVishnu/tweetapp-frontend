@@ -69,13 +69,13 @@ export default function TweetTemplate(props) {
     const [currentTweetMessage, setCurrentTweetMessage] = useState(props.tweet.tweet);
     const [wasReplyTweetSubmitted, setWasReplyTweetSubmitted] = useState(false);
     const [wasUpdateTweetSubmitted, setWasUpdateTweetSubmitted] = useState(false);
+    const [replyMsg, setReplyMsg] = useState('')
 
     const [expanded, setExpanded] = useState(false);
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
-    console.log(props);
     const handleExpandClick = () => {
         setExpanded(!expanded);
     };
@@ -109,6 +109,7 @@ export default function TweetTemplate(props) {
                     // console.log(err);
                 })
             setLikedTweetId();
+
         }
         if (likedTweetId) likeTweet();
     }, [likedTweetId])
@@ -293,22 +294,43 @@ export default function TweetTemplate(props) {
                             </CardActions>
                             <Typography variant="overline" display="block" gutterBottom>
                                 <div style={{ padding: '2%' }}>
-                                    {tweet.replies ? Object.keys(tweet.replies).map((username,reply) => {
+                                    {props.tweet.replies ? Object.keys(props.tweet.replies).map((username, replyId) => {
+                                        const msgs = [...props.tweet.replies[username]];
                                         return (
-                                            <div key={reply}>
+                                            // <></>
+                                            <div key={props.tweet.replies[replyId]}>
                                                 <CardHeader
                                                     avatar={
                                                         <Avatar sx={{ bgcolor: red[500] }} size="small" aria-label="recipe">
-                                                            {userName.charAt(0)}
+                                                            {username.charAt(0)}
                                                         </Avatar>
-                
+
+
                                                     }
+                                                    subheader={username}
                                                 />
-                                                {reply ? <TweetTemplate style={{ padding: '2%', minWidth: "70%" }} reply={reply} /> : ''}
+                                                {msgs ? msgs.map((msg) => {
+                                                    return (
+                                                        <div key={msg}
+                                                            style ={{
+                                                                paddingLeft: '50%'
+                                                            
+                                                            }}
+                                                        >
+                                                            {msg ?
+                                                                <span >
+                                                                    {msg}
+                                                                </span>
+                                                                : ''}
+                                                                <br/>
+                                                        </div>
+                                                    );
+                                                }) : "hi"}
+
                                             </div>
                                         );
                                     })
-                                        : <Typography style={{ color: red }}>{noTweetsByUser}</Typography>
+                                        : ''
                                     }
                                 </div>
                             </Typography>
