@@ -1,32 +1,14 @@
 import React, { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import Button from "react-bootstrap/Button";
 import Grid from '@mui/material/Grid';
-import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 
 import axios from "axios";
 
 
-import {
-  BsFillBookFill,
-  BsFillShareFill,
-  BsFillPersonPlusFill,
-  BsFillCpuFill
-} from "react-icons/bs";
-
-import { RiLoginBoxLine } from "react-icons/ri";
-
-import styles from "../styles/HomePage.module.css";
 import ListAllTweets from "./ListAllTweets";
 import Navbar from "./Navbar";
 import PostTweet from "./PostTweet";
-import ListAllUsers from "./ListAllUsers";
-import ListTweetsByUser from "./ListTweetsByUser";
 import { BASE_URL } from "../Constants";
 
 export default function HomePage() {

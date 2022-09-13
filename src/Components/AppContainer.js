@@ -5,7 +5,6 @@ import Registration from "./Registration";
 //import HomePage from "./HomePage";
 import LandingPage from "./LandingPage";
 import Login from "./Login";
-import Navbar from "./Navbar"
 import HomePage from "./HomePage";
 import ListAllUsers from "./ListAllUsers";
 

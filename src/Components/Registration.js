@@ -4,7 +4,6 @@ import { Backdrop, Button, TextField } from '@mui/material';
 import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Radio from "@material-ui/core/Radio";
-import { Box } from '@mui/system';
 import { CircularProgress } from '@material-ui/core';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -13,7 +12,6 @@ import axios from 'axios';
 import { Link, useNavigate } from "react-router-dom";
 import { BASE_URL } from '../Constants';
 import { red } from '@material-ui/core/colors';
-import { Reddit } from '@mui/icons-material';
 
 
 
@@ -50,7 +48,6 @@ const Registration = () => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [gender, setGender] = useState('');
-  const [dob, setDob] = useState(new Date());
   const [mobileNumber, setMobileNumber] = useState('');
   const [spinner, setSpinner] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
