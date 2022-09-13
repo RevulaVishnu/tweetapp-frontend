@@ -27,26 +27,28 @@ import Navbar from "./Navbar";
 import PostTweet from "./PostTweet";
 import ListAllUsers from "./ListAllUsers";
 import ListTweetsByUser from "./ListTweetsByUser";
+import { BASE_URL } from "../Constants";
 
 export default function HomePage() {
   const navigate = useNavigate();
 
   function tokenValidate() {
-    axios.get('http://localhost:8084/api/v1.0/validate', {
+    axios.get(BASE_URL + '/validate', {
       headers: {
         Authorization: localStorage.getItem("Authorization")
       }
     })
-      .then(function (response) {
-        console.log(response.status);
-      })
-      .catch(function (error) {
-        console.log(error);
-        localStorage.removeItem("Authorization");
-        localStorage.removeItem("userName");
-        navigate('/')
-      });
+    .then(function (response) {
+      console.log(response.status);
+    })
+    .catch(function (error) {
+      console.log(error);
+      localStorage.removeItem("Authorization");
+      localStorage.removeItem("userName");
+      navigate('/')
+    });
   }
+
   useEffect(() => {
     if (localStorage.getItem("Authorization") !== "") {
       tokenValidate()
@@ -54,18 +56,18 @@ export default function HomePage() {
         navigate("/home");
     }
   }, []);
+
   return (
     // <Container >
     <>
       <Navbar />
       <Grid style={{ display: 'flex', width: '100%' }}>
-        <div style={{ padding: '2%', minWidth: "66%" }}>
+        {/* <div style={{ padding: '2%', minWidth: "66%" }}>
           <ListAllUsers />
-          {/* <ListTweetsByUser /> */}
-        </div>
-        {/* <div style={{ padding: '2%', minWidth: "33%" }}>
-          <ListAllTweets />
         </div> */}
+        <div style={{ padding: '2%', minWidth: "33%" }}>
+          <ListAllTweets />
+        </div>
         <div style={{ padding: '2%', minWidth: "33%" }}>
           <Box
             sx={{
@@ -80,9 +82,9 @@ export default function HomePage() {
           >
             <PostTweet />
           </Box>
-          <div style={{ padding: '2%', minWidth: "33%" }}>
+          {/* <div style={{ padding: '2%', minWidth: "33%" }}>
             <ListAllTweets />
-          </div>
+          </div> */}
         </div>
       </Grid>
     </>

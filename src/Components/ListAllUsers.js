@@ -27,6 +27,10 @@ import Divider from '@mui/material/Divider';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import ListTweetsByUser from './ListTweetsByUser';
+import { BASE_URL } from '../Constants';
+import TweetTemplate from './TweetTemplate';
+import { Link, useNavigate } from "react-router-dom";
+import Navbar from './Navbar';
 
 const ExpandMore = styled((props) => {
     const { expand, ...other } = props;
@@ -40,28 +44,20 @@ const ExpandMore = styled((props) => {
 }));
 
 export default function ListAllUsers() {
+    const navigate = useNavigate();
+
     let isMounted = true;
-    const [clicked, setClicked] = useState('');
-    const [deleteSelected, SetDeleteSelected] = useState('');
-    const [users, setUsers] = useState([]);
-    // const [replies, setReplies] = useState({});
-    const [submitTweet, setSubmitTweet] = useState(false);
-    const [tweetMessage, setTweetMessage] = useState('');
-    // const tweetList = 
-    const [expanded, setExpanded] = useState(false);
-
-    const handleExpandClick = () => {
-        setExpanded(!expanded);
-    };
-    const [tweetIdLiked, setTweetIdLiked] = useState('');
-
+    const [users, setUsers] = useState([])
+    const [tweets, setTweets] = useState([]);
+    const [wasUserSelected, setWasUserSelected] = useState(false);
     const [userSelected, setUserSelected] = useState('');
+    const [noTweetsByUser, setNoTweetsByUser] = useState('');
 
     useEffect(() => {
         isMounted &&
-            axios.get('http://localhost:8084/api/v1.0/user/users/all')
+            axios.get(BASE_URL + '/user/users/all')
                 .then((response) => {
-                    // console.log(response.data.data);
+                    console.log(response.data.data);
                     setUsers(response.data.data);
                 })
         return () => {
@@ -69,90 +65,102 @@ export default function ListAllUsers() {
         };
     }, []);
 
-
-    useEffect(() => {
-        function onlike() {
-            // console.log(tweetMessage)
-            axios.put(
-                'http://localhost:8084/api/v1.0/tweets/' + localStorage.getItem("username") + '/like/' + clicked, {},
-                {
-                    headers: {
-                        Authorization: localStorage.getItem('Authorization'),
-
-                    }
-                }
-            )
-                .then((resp) => {
-                    console.log(resp);
-                })
-                .catch((err) => {
-                    // console.log(err);
-                })
-            setClicked();
-        }
-        if (clicked) onlike();
-    }, [clicked])
-
-    function SendTweetUser(userName) {
-        setUserSelected(userName);
-
+    function tokenValidate() {
+        axios.get(BASE_URL + '/validate', {
+            headers: {
+                Authorization: localStorage.getItem("Authorization")
+            }
+        })
+            .then(function (response) {
+                console.log(response.status);
+            })
+            .catch(function (error) {
+                console.log(error);
+                localStorage.removeItem("Authorization");
+                localStorage.removeItem("userName");
+                navigate('/')
+            });
     }
 
+    useEffect(() => {
+        if (localStorage.getItem("Authorization") !== "") {
+            tokenValidate()
+        }
+    }, []);
 
 
     useEffect(() => {
-        function deleteTweet(e) {
-            // console.log(tweetMessage)
-            axios.delete(
-                'http://localhost:8084/api/v1.0/tweets/' + localStorage.getItem("username") + '/delete/' + deleteSelected,
+        function getTweetsByUser() {
+            console.log(userSelected)
+            axios.get(BASE_URL + '/tweets/' + userSelected,
                 {
                     headers: {
                         Authorization: localStorage.getItem('Authorization')
                     }
                 }
             )
-                .then((resp) => {
-                    console.log(resp);
-                });
+                .then((response) => {
+                    console.log(response.status);
+                    console.log(response.data.data);
+                    setTweets(response.data.data);
+                }).catch((err) => {
+                    console.log(err.response.data.data)
+                    setNoTweetsByUser(err.response.data.data)
+                })
+            setWasUserSelected(false);
+            setUserSelected('');
         }
-        if (deleteSelected) deleteTweet();
-    }, [deleteSelected])
+        if (userSelected) {
+            getTweetsByUser();
+        }
+    }, [wasUserSelected]);
 
     return (
-        <div  style={{ display: 'flex', width: '100%' }}>
-            <div  style={{ padding: '2%', minWidth: "30%" }}>
-            {users ? users.map((user) => {
-                let sameUser = false;
-                if (user.userName === localStorage.getItem('username')) {
-                    sameUser = true;
-                }
-                return (
-                    <Grid style={{ padding: '5px 30px' }} key={user.userName}>
-                        <br />
-                        <Card >
-                            <CardHeader
-                                onClick={()=>{SendTweetUser(user.userName)}}
+        <><Navbar />
+            <div style={{ display: 'flex', width: '100%' }}>
+                <div style={{ padding: '2%', minWidth: "30%" }}>
+                    {users ? users.map((user) => {
+                        let sameUser = false;
+                        if (user.userName === localStorage.getItem('username')) {
+                            sameUser = true;
+                        }
+                        return (
+                            <Grid style={{ padding: '5px 30px' }} key={user.userName}>
+                                <br />
+                                <Card >
+                                    <CardHeader
+                                        onClick={() => { setUserSelected(user.userName); setWasUserSelected(true); setTweets('') }}
+                                        avatar={
+                                            <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
+                                                {user.userName.charAt(0)}
+                                            </Avatar>
+                                        }
+                                        title={user.userName}
+                                    />
+                                </Card>
+                                {/* : ''} */}
+                            </Grid>
+                        );
+                    }) : ""
+                    }
+                </div>
 
-                                // console.log(user.userName);
-                                // setUserSelected(user.userName)
-                                // }}
 
-                                avatar={
-                                    <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-                                        {user.userName.charAt(0)}
-                                    </Avatar>
-                                }
-                                title={user.userName}
-                            />
-                        </Card>
+                <div style={{ display: 'flex', width: '100%' }}>
+                    <div style={{ padding: '2%' }}>
+                        {tweets ? tweets.map((tweet) => {
+                            return (
+                                <div key={tweet.tweetId}>
+                                    {tweet ? <TweetTemplate style={{ padding: '2%', minWidth: "70%" }} tweet={tweet} /> : ''}
+                                </div>
+                            );
+                        })
+                            : <Typography style={{ color: red }}>{noTweetsByUser}</Typography>
+                        }
+                    </div>
+                </div>
 
-                    </Grid>
-                );
-            }) : "hi"}
-            </div>
-            <Card>
-                {userSelected ? <ListTweetsByUser style={{ padding: '2%', minWidth: "70%" }} userSelected={userSelected}/> : ''}
-            </Card>
-        </div >
+
+            </div ></>
     );
 }
