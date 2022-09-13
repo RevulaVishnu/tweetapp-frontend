@@ -7,6 +7,7 @@ import LandingPage from "./LandingPage";
 import Login from "./Login";
 import Navbar from "./Navbar"
 import HomePage from "./HomePage";
+import ListAllUsers from "./ListAllUsers";
 
 
 function AppContainer() {
@@ -17,6 +18,7 @@ function AppContainer() {
         <Route path="/signup" element={<Registration />} />      
         <Route path="/signin" element={<Login />} />      
         <Route path="/home" element={<HomePage />} />      
+        <Route path="/allUsers" element={<ListAllUsers />} />      
       </Routes>
     </HashRouter>
   );

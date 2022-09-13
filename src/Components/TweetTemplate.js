@@ -32,6 +32,7 @@ import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import { EditText, EditTextarea } from 'react-edit-text';
+import { BASE_URL } from '../Constants';
 
 
 

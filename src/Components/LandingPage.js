@@ -40,7 +40,7 @@ function LandingPage() {
                   <Link to="/signin" className={styles.linkTextFormat}><Button type="submit" variant="contained" color="primary">Sign In <RiLoginBoxLine /></Button></Link>
                 </div>
                 <div style={{ margin: "20px", width: '50%' }}>
-                  <Link to="/signup" className={styles.linkTextFormat}><Button variant="success">Sign Up <BsFillPersonPlusFill /></Button></Link>
+                  <Link to="/signup" className={styles.linkTextFormat}><Button color="success" variant="contained">Sign Up <BsFillPersonPlusFill /></Button></Link>
                 </div>
               </div>
           

@@ -38,6 +38,12 @@ export default function Navbar() {
     localStorage.removeItem("userName");
     navigate('/')
   }
+  function allUsersPage() {
+    navigate('/allUsers')
+  }
+  function homePage() {
+    navigate('/home')
+  }
   return (
     <div >
       <AppBar
@@ -49,6 +55,12 @@ export default function Navbar() {
           <Typography variant="h6" className={classes.title}>
             Tweet App
           </Typography>
+          <IconButton color="inherit" onClick={() => homePage()}>
+            Home
+          </IconButton>
+          <IconButton color="inherit" onClick={() => allUsersPage()}>
+            All Users
+          </IconButton>
           <IconButton color="inherit" onClick={() => logout()}>
             Logout
           </IconButton>

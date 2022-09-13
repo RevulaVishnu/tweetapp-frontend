@@ -60,13 +60,12 @@ export default function HomePage() {
     <>
       <Navbar />
       <Grid style={{ display: 'flex', width: '100%' }}>
-        <div style={{ padding: '2%', minWidth: "66%" }}>
+        {/* <div style={{ padding: '2%', minWidth: "66%" }}>
           <ListAllUsers />
-          {/* <ListTweetsByUser /> */}
-        </div>
-        {/* <div style={{ padding: '2%', minWidth: "33%" }}>
-          <ListAllTweets />
         </div> */}
+        <div style={{ padding: '2%', minWidth: "33%" }}>
+          <ListAllTweets />
+        </div>
         <div style={{ padding: '2%', minWidth: "33%" }}>
           <Box
             sx={{
@@ -81,9 +80,9 @@ export default function HomePage() {
           >
             <PostTweet />
           </Box>
-          <div style={{ padding: '2%', minWidth: "33%" }}>
+          {/* <div style={{ padding: '2%', minWidth: "33%" }}>
             <ListAllTweets />
-          </div>
+          </div> */}
         </div>
       </Grid>
     </>

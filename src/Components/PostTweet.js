@@ -59,7 +59,7 @@ export default function PostTweet() {
                 }
             )
                 .then((resp) => {
-                    console.log(resp);
+                    console.log(resp)
                 });
             setSubmitTweet(false)
         }
@@ -105,7 +105,6 @@ export default function PostTweet() {
                             <Telegram />
                         </IconButton>
                     </CardActions>
-
                 </Card>
             </Grid>
         </div >
