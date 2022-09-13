@@ -1,5 +1,5 @@
 import { useState, React } from 'react';
-import { makeStyles } from '@material-ui/core';
+import { makeStyles, Typography } from '@material-ui/core';
 import { Backdrop, Button, TextField } from '@mui/material';
 import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
@@ -12,6 +12,8 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import axios from 'axios';
 import { Link, useNavigate } from "react-router-dom";
 import { BASE_URL } from '../Constants';
+import { red } from '@material-ui/core/colors';
+import { Reddit } from '@mui/icons-material';
 
 
 
@@ -51,7 +53,7 @@ const Registration = () => {
   const [dob, setDob] = useState(new Date());
   const [mobileNumber, setMobileNumber] = useState('');
   const [spinner, setSpinner] = useState(false);
-
+  const [errorMsg, setErrorMsg] = useState('');
 
   const handleSubmit = e => {
     e.preventDefault();
@@ -73,18 +75,18 @@ const Registration = () => {
       navigate('/')
     })
     .catch(function (error) {
-      console.log(error);
-
-
+      console.log(error.response.data.data);
+      setErrorMsg(error.response.data.data);
     });
   
-    handleClose();
   };
 
   function handleClose(){
     navigate('/');
   }
-
+  if(errorMsg !==''){
+    
+  }
   return (
     <>
     <Backdrop sx={{ color: "#fff", zIndex:(theme)=> theme.zIndex.drawer+1 }}>
@@ -150,6 +152,9 @@ const Registration = () => {
         onChange={e => setMobileNumber(e.target.value)}
       />
       <div>
+        <div>
+          <Typography style={{color: red}}>{errorMsg}</Typography>
+        </div>
         <Button variant="contained" onClick={handleClose}>
           Cancel
         </Button>

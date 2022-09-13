@@ -33,21 +33,22 @@ export default function HomePage() {
   const navigate = useNavigate();
 
   function tokenValidate() {
-    axios.get(BASE_URL+'/validate', {
+    axios.get(BASE_URL + '/validate', {
       headers: {
         Authorization: localStorage.getItem("Authorization")
       }
     })
-      .then(function (response) {
-        console.log(response.status);
-      })
-      .catch(function (error) {
-        console.log(error);
-        localStorage.removeItem("Authorization");
-        localStorage.removeItem("userName");
-        navigate('/')
-      });
+    .then(function (response) {
+      console.log(response.status);
+    })
+    .catch(function (error) {
+      console.log(error);
+      localStorage.removeItem("Authorization");
+      localStorage.removeItem("userName");
+      navigate('/')
+    });
   }
+
   useEffect(() => {
     if (localStorage.getItem("Authorization") !== "") {
       tokenValidate()
@@ -55,6 +56,7 @@ export default function HomePage() {
         navigate("/home");
     }
   }, []);
+
   return (
     // <Container >
     <>

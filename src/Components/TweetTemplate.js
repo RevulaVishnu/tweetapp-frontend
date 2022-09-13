@@ -75,14 +75,15 @@ export default function TweetTemplate(props) {
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
+    console.log(props);
     const handleExpandClick = () => {
         setExpanded(!expanded);
     };
 
-    const refreshPage = ()=>{
+    const refreshPage = () => {
         window.location.reload();
-     }
-   
+    }
+
     const [tweetSentByParent, setTweetSentByParent] = useState(props.tweet);
     let sameUser = false;
     if (tweetSentByParent.userName === localStorage.getItem('username')) {
@@ -92,7 +93,7 @@ export default function TweetTemplate(props) {
         function likeTweet() {
             // console.log(tweetMessage)
             axios.put(
-                BASE_URL+'/tweets/' + localStorage.getItem("username") + '/like/' + likedTweetId,
+                BASE_URL + '/tweets/' + localStorage.getItem("username") + '/like/' + likedTweetId,
                 {},
                 {
                     headers: {
@@ -118,7 +119,7 @@ export default function TweetTemplate(props) {
             if (replyTweetMessage !== '') {
                 console.log(replyTweetMessage)
                 axios.post(
-                    BASE_URL+'/tweets/' + localStorage.getItem("username") + '/reply/' + repliedTweetId,
+                    BASE_URL + '/tweets/' + localStorage.getItem("username") + '/reply/' + repliedTweetId,
                     {
                         'tweet': replyTweetMessage
                     },
@@ -130,6 +131,7 @@ export default function TweetTemplate(props) {
                     }
                 )
                     .then((resp) => {
+                        refreshPage();
                         console.log(resp);
                     });
             }
@@ -141,7 +143,7 @@ export default function TweetTemplate(props) {
         function deleteTweet() {
             // console.log(tweetMessage)
             axios.delete(
-                BASE_URL+'/tweets/' + localStorage.getItem("username") + '/delete/' + deletedTweetId,
+                BASE_URL + '/tweets/' + localStorage.getItem("username") + '/delete/' + deletedTweetId,
                 {
                     headers: {
                         Authorization: localStorage.getItem('Authorization')
@@ -161,7 +163,7 @@ export default function TweetTemplate(props) {
             if (updatedTweetMessage !== '' && updatedTweetMessage !== currentTweetMessage) {
                 console.log(updatedTweetMessage)
                 axios.put(
-                    BASE_URL+'/tweets/' + localStorage.getItem("username") + '/update/' + updatedTweetId,
+                    BASE_URL + '/tweets/' + localStorage.getItem("username") + '/update/' + updatedTweetId,
                     {
                         tweet: updatedTweetMessage
                     },
@@ -172,8 +174,9 @@ export default function TweetTemplate(props) {
                     }
                 )
                     .then((resp) => {
-                        // refreshPage();
+                        refreshPage();
                         console.log(resp);
+                        
                     });
             }
 
@@ -183,10 +186,8 @@ export default function TweetTemplate(props) {
 
     return (
         <div >
-
             <Grid key={props.tweet.tweetId}>
                 <br />
-
                 <Card sx={{ maxWidth: 345 }}>
                     <CardHeader
                         avatar={

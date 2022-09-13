@@ -47,37 +47,24 @@ export default function ListAllUsers() {
     const navigate = useNavigate();
 
     let isMounted = true;
-    const [clicked, setClicked] = useState('');
-    const [deleteSelected, SetDeleteSelected] = useState('');
-    const [users, setUsers] = useState([]);
-    // const [replies, setReplies] = useState({});
-    const [submitTweet, setSubmitTweet] = useState(false);
-    const [tweetMessage, setTweetMessage] = useState('');
-    // const tweetList = 
-    const [expanded, setExpanded] = useState(false);
-
+    const [users, setUsers] = useState([])
     const [tweets, setTweets] = useState([]);
-    const [noTweetsErr, setNoTweetsErr] = useState('');
-
-
-    const handleExpandClick = () => {
-        setExpanded(!expanded);
-    };
-    const [tweetIdLiked, setTweetIdLiked] = useState('');
-
+    const [wasUserSelected, setWasUserSelected] = useState(false);
     const [userSelected, setUserSelected] = useState('');
+    const [noTweetsByUser, setNoTweetsByUser] = useState('');
 
     useEffect(() => {
         isMounted &&
             axios.get(BASE_URL + '/user/users/all')
                 .then((response) => {
-                    // console.log(response.data.data);
+                    console.log(response.data.data);
                     setUsers(response.data.data);
                 })
         return () => {
             isMounted = false;
         };
     }, []);
+
     function tokenValidate() {
         axios.get(BASE_URL + '/validate', {
             headers: {
@@ -94,21 +81,17 @@ export default function ListAllUsers() {
                 navigate('/')
             });
     }
+
     useEffect(() => {
         if (localStorage.getItem("Authorization") !== "") {
             tokenValidate()
-            if (localStorage.getItem("Authorization") !== null && localStorage.getItem("Authorization") !== "")
-                navigate("/allUsers");
         }
     }, []);
 
-    function SendTweetUser(userName) {
-        setUserSelected(userName);
-    }
 
     useEffect(() => {
-
         function getTweetsByUser() {
+            console.log(userSelected)
             axios.get(BASE_URL + '/tweets/' + userSelected,
                 {
                     headers: {
@@ -118,18 +101,19 @@ export default function ListAllUsers() {
             )
                 .then((response) => {
                     console.log(response.status);
+                    console.log(response.data.data);
                     setTweets(response.data.data);
-
                 }).catch((err) => {
                     console.log(err.response.data.data)
-
+                    setNoTweetsByUser(err.response.data.data)
                 })
-            isMounted = false;
+            setWasUserSelected(false);
+            setUserSelected('');
         }
-        if (isMounted) {
+        if (userSelected) {
             getTweetsByUser();
         }
-    });
+    }, [wasUserSelected]);
 
     return (
         <><Navbar />
@@ -145,7 +129,7 @@ export default function ListAllUsers() {
                                 <br />
                                 <Card >
                                     <CardHeader
-                                        onClick={() => { setUserSelected(user.userName) }}
+                                        onClick={() => { setUserSelected(user.userName); setWasUserSelected(true); setTweets('') }}
                                         avatar={
                                             <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
                                                 {user.userName.charAt(0)}
@@ -154,24 +138,28 @@ export default function ListAllUsers() {
                                         title={user.userName}
                                     />
                                 </Card>
-
-                                <Card>
-                                    <div style={{ display: 'flex', width: '100%' }}>
-                                        <div style={{ padding: '2%' }}>
-                                            {tweets ? tweets.map((tweet) => {
-                                                <div key={tweet.tweetId}>
-                                                    {tweet ? <TweetTemplate style={{ padding: '2%' }} tweet={tweet} /> : ''}
-                                                </div>
-            
-                                            }) : "hi"}
-                                        </div>
-                                    </div>
-                                </Card>
                                 {/* : ''} */}
                             </Grid>
                         );
-                    }) : "hi"}
+                    }) : ""
+                    }
                 </div>
+
+
+                <div style={{ display: 'flex', width: '100%' }}>
+                    <div style={{ padding: '2%' }}>
+                        {tweets ? tweets.map((tweet) => {
+                            return (
+                                <div key={tweet.tweetId}>
+                                    {tweet ? <TweetTemplate style={{ padding: '2%', minWidth: "70%" }} tweet={tweet} /> : ''}
+                                </div>
+                            );
+                        })
+                            : <Typography style={{ color: red }}>{noTweetsByUser}</Typography>
+                        }
+                    </div>
+                </div>
+
 
             </div ></>
     );

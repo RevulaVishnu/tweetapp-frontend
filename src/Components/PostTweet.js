@@ -60,6 +60,7 @@ export default function PostTweet() {
             )
                 .then((resp) => {
                     console.log(resp)
+                    window.location.reload();
                 });
             setSubmitTweet(false)
         }
