@@ -176,7 +176,7 @@ export default function TweetTemplate(props) {
                     .then((resp) => {
                         refreshPage();
                         console.log(resp);
-                        
+
                     });
             }
 
@@ -292,16 +292,25 @@ export default function TweetTemplate(props) {
                                 </IconButton>
                             </CardActions>
                             <Typography variant="overline" display="block" gutterBottom>
-                                <CardHeader
-                                    avatar={
-                                        <Avatar sx={{ bgcolor: red[500] }} size="small" aria-label="recipe">
-                                            {props.tweet.userName.charAt(0)}
-                                        </Avatar>
-
+                                <div style={{ padding: '2%' }}>
+                                    {tweet.replies ? Object.keys(tweet.replies).map((username,reply) => {
+                                        return (
+                                            <div key={reply}>
+                                                <CardHeader
+                                                    avatar={
+                                                        <Avatar sx={{ bgcolor: red[500] }} size="small" aria-label="recipe">
+                                                            {userName.charAt(0)}
+                                                        </Avatar>
+                
+                                                    }
+                                                />
+                                                {reply ? <TweetTemplate style={{ padding: '2%', minWidth: "70%" }} reply={reply} /> : ''}
+                                            </div>
+                                        );
+                                    })
+                                        : <Typography style={{ color: red }}>{noTweetsByUser}</Typography>
                                     }
-                                    subheader={props.tweet.created}
-                                />
-                                overline text
+                                </div>
                             </Typography>
                         </CardContent>
                     </Collapse>
