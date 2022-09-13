@@ -55,7 +55,7 @@ const Registration = () => {
 
   const handleSubmit = e => {
     e.preventDefault();
-    setSpinner(true);
+
     console.log(firstName, lastName, email, password, gender, value,finaldate, mobileNumber);
     axios.post(BASE_URL+'/user/register', {
       "email":email,
@@ -69,12 +69,12 @@ const Registration = () => {
     })
     .then(function (response) {
       console.log(response);
-      setSpinner(false);
+
       navigate('/')
     })
     .catch(function (error) {
       console.log(error);
-      setSpinner(false);
+
 
     });
   
@@ -124,7 +124,7 @@ const Registration = () => {
       />
 
       <RadioGroup row name="Gender" defaultValue="Male" value={gender} onChange={e => setGender(e.target.value)}>
-        <FormControlLabel checked value="Male" control={<Radio />} label="Male" />
+        <FormControlLabel  value="Male" control={<Radio />} label="Male" />
         <FormControlLabel value="Female" control={<Radio />} label="Female" />
       </RadioGroup>
 

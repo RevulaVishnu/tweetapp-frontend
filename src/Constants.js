@@ -1,1 +1,1 @@
-export const BASE_URL = "http://localhost:8084/api/v1.0";
+export const BASE_URL = "http://tweet-LoadB-1RVB8HGCA28D3-cdb2a7c7804b5dd7.elb.us-east-1.amazonaws.com:8084/api/v1.0";
